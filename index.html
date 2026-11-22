@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="Revisión SVAE">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="color-scheme" content="light dark">
 <title>Revisión de unidad · SVAE Talavera</title>
 <style>
@@ -157,19 +157,9 @@ input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-vis
 .crew{margin-top:14px}
 .crew+.crew{padding-top:12px;border-top:1px solid var(--line)}
 .crew label{margin-top:0}
-.sub,.sig{margin-top:8px}
-.sigwrap{display:flex;align-items:stretch}
-.siggut{flex:0 0 14%;touch-action:pan-y;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;font-size:.62rem;line-height:1.1;color:var(--mut);opacity:.8;user-select:none;-webkit-user-select:none}
-.siggut b{font-size:1.4rem;line-height:1}
-.sigpad{position:relative;flex:1;min-width:0;background:#fff;border:2px dashed var(--line);border-radius:10px;overflow:hidden}
-.sigwrap.err .sigpad{border-color:var(--inct)}
-.sigpad canvas{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}
-.sighint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8d9bb3;font-weight:600;pointer-events:none;text-align:center;padding:0 10px}
-.sigwrap.has .sighint{display:none}
-.sigrow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:6px;font-size:.88rem;color:var(--mut)}
-.sigrow button{min-height:40px;padding:6px 12px}
-.sigbtns{display:flex;gap:8px}
-.sigbtns button:disabled{opacity:.4}
+.sub{margin-top:8px}
+.hint{margin:6px 2px 0;font-size:.82rem;color:var(--mut)}
+.credit{margin:12px 6px 0;text-align:center;color:var(--mut);font-size:.78rem;line-height:1.35}
 .warn{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:var(--warnbg);color:var(--warnt);font-size:.88rem;font-weight:600}
 button.primary,button.wa,button.secondary,a.btn{display:block;width:100%;min-height:52px;padding:12px 14px;border-radius:12px;font:inherit;font-weight:700;text-align:center;text-decoration:none}
 button.primary{border:0;background:var(--gold);color:#0c2447;font-size:1.05rem}
@@ -212,6 +202,8 @@ noscript{display:block;padding:16px}
  "subtitulo": "Inicio de guardia",
  "grupoWhatsApp": "parte de Esvae, parte incidencia de Esvae de Talavera",
  "provisional": true,
+ "creditoL1": "Autoría, asesoramiento y verificación: Carlos Blanco, responsable de enfermería del SVAE de Talavera.",
+ "creditoL2": "Elaborada con la ayuda de la inteligencia artificial Claude (Anthropic).",
  "motivos": [
   "No hay stock en el almacén",
   "Material caducado",
@@ -219,9 +211,8 @@ noscript{display:block;padding:16px}
   "Falta material (reponer)",
   "Equipo averiado o no funciona"
  ],
- "firmaObligatoria": true,
  "inicio": "2026-11-21",
- "ciclo": 31,
+ "ciclo": 28,
  "equipo": [
   {
    "id": "conductor",
@@ -279,14 +270,6 @@ noscript{display:block;padding:16px}
    "t": "Panel lateral derecho",
    "img": "img/panel-derecho.jpg"
   },
-  "AMPA": {
-   "t": "Ampulario",
-   "img": "img/ampulario-a.jpg"
-  },
-  "AMPB": {
-   "t": "Ampulario",
-   "img": "img/ampulario-b.jpg"
-  },
   "TRAUMA": {
    "t": "Espacio trauma",
    "img": "img/espacio-trauma.jpg"
@@ -342,6 +325,23 @@ noscript{display:block;padding:16px}
      "t": "Funciona con batería (sin enchufar a la red)"
     },
     {
+     "id": "amp-fr",
+     "g": "Parte frontal del ampulario",
+     "t": "Panel deslizante de ampollas: hay suficientes fármacos",
+     "motivos": [
+      "No hay stock en el almacén",
+      "Fármaco caducado",
+      "Falta fármaco (reponer)",
+      "Ampolla o envase deteriorado",
+      "Panel sin ampollas todavía"
+     ],
+     "detalleObl": true,
+     "notaLbl": "Incidencia (obligatorio): escribe el fármaco o fármacos afectados",
+     "ph": "Qué fármaco(s) y cuántas ampollas",
+     "nota": "Es la parte frontal que se desliza, con las ampollas. La lista de fármacos que deben estar se añadirá más adelante.",
+     "soloApp": true
+    },
+    {
      "id": "gua-as",
      "g": "Guantes (todas las tallas)",
      "t": "Cabina asistencial"
@@ -350,6 +350,12 @@ noscript{display:block;padding:16px}
      "id": "gua-co",
      "g": "Guantes (todas las tallas)",
      "t": "Cabina de conducción"
+    },
+    {
+     "id": "bas",
+     "g": "Basura",
+     "t": "Papelera limpia y vacía",
+     "ok": "Hecho"
     },
     {
      "id": "o2g1-l",
@@ -415,7 +421,7 @@ noscript{display:block;padding:16px}
     },
     {
      "id": "o2p1-l",
-     "g": "Oxígeno · botella pequeña 1",
+     "g": "Oxígeno · botella pequeña 1 · puerta trasera",
      "gc": "verde",
      "t": "Bares",
      "tipo": "num",
@@ -430,7 +436,7 @@ noscript{display:block;padding:16px}
     },
     {
      "id": "o2p1-n",
-     "g": "Oxígeno · botella pequeña 1",
+     "g": "Oxígeno · botella pequeña 1 · puerta trasera",
      "gc": "verde",
      "t": "Nivel",
      "tipo": "esc",
@@ -446,7 +452,7 @@ noscript{display:block;padding:16px}
     },
     {
      "id": "o2p2-l",
-     "g": "Oxígeno · botella pequeña 2",
+     "g": "Oxígeno · botella pequeña 2 · puerta lateral",
      "gc": "verde",
      "t": "Bares",
      "tipo": "num",
@@ -461,7 +467,7 @@ noscript{display:block;padding:16px}
     },
     {
      "id": "o2p2-n",
-     "g": "Oxígeno · botella pequeña 2",
+     "g": "Oxígeno · botella pequeña 2 · puerta lateral",
      "gc": "verde",
      "t": "Nivel",
      "tipo": "esc",
@@ -474,6 +480,18 @@ noscript{display:block;padding:16px}
      ],
      "notaOpc": true,
      "alerta": "INCIDENCIA: menos de 70 bar. La botella no es válida, hay que revisarla."
+    },
+    {
+     "id": "lds",
+     "g": "Limpieza diaria de la cabina asistencial",
+     "t": "Limpieza somera: superficies, sillones, reposabrazos, cinturones, barandillas y zonas de contacto",
+     "ok": "Hecho"
+    },
+    {
+     "id": "lsu",
+     "g": "Limpieza diaria de la cabina asistencial",
+     "t": "Limpieza del suelo",
+     "ok": "Hecho"
     }
    ]
   },
@@ -534,7 +552,7 @@ noscript{display:block;padding:16px}
     {
      "id": "fre",
      "g": "Frenos",
-     "t": "Estado de los frenos",
+     "t": "Estado de los frenos (líquido de frenos, pastillas)",
      "tipo": "esc",
      "niveles": [
       "Pésimo",
@@ -555,12 +573,45 @@ noscript{display:block;padding:16px}
      "fuerte": true,
      "alerta": "FRENOS EN ESTADO MALO O PÉSIMO: AVISAR AL SERVICIO TÉCNICO",
      "motivos": [
-      "Desgaste de los frenos",
+      "Líquido de frenos bajo o en mal estado",
+      "Pastillas desgastadas",
       "Ruido o vibración al frenar",
       "Pedal blando o largo"
      ],
      "notaLbl": "Incidencia (obligatorio): qué le ocurre a los frenos",
      "ph": "Qué le ocurre a los frenos"
+    },
+    {
+     "id": "ace",
+     "g": "Aceite",
+     "t": "Nivel de aceite adecuado",
+     "ok": "Correcto",
+     "motivos": [
+      "Nivel bajo (hay que reponer)",
+      "Nivel por encima del máximo",
+      "Aceite en mal estado o fuga"
+     ]
+    },
+    {
+     "id": "luz-con",
+     "g": "Luces y acústicos",
+     "t": "Luces de conducción"
+    },
+    {
+     "id": "luz-pri",
+     "g": "Luces y acústicos",
+     "t": "Luces de prioritarios"
+    },
+    {
+     "id": "luz-ac",
+     "g": "Luces y acústicos",
+     "t": "Acústicos (sirena)"
+    },
+    {
+     "id": "lcc",
+     "g": "Limpieza de la cabina de conducción",
+     "t": "Volante y salpicadero",
+     "ok": "Hecho"
     }
    ]
   }
@@ -794,111 +845,17 @@ noscript{display:block;padding:16px}
   },
   {
    "n": 26,
-   "p": "AMPA",
-   "nombre": "Nicho 26 · Ampulario: filas 1 a 5 (las de arriba)",
-   "titulo": "Nicho 26",
-   "sub": "Ampulario · filas 1 a 5 (arriba)",
-   "asoc": [],
-   "ampLoc": true,
-   "box": {
-    "l": 8.0,
-    "t": 15.3,
-    "w": 62.5,
-    "h": 46.5
-   },
-   "cap": "Ampulario · filas 1 a 5 (las 5 de arriba). Revisa todo lo que está dentro del recuadro que parpadea.",
-   "extra": [
-    {
-     "id": "far",
-     "t": "Fármacos de las filas 1 a 5 completos y repuestos",
-     "notaLbl": "Incidencia (obligatorio): escribe el fármaco o fármacos afectados",
-     "ph": "Qué fármaco(s) y cuántas ampollas",
-     "motivos": [
-      "No hay stock en el almacén",
-      "Fármaco caducado",
-      "Falta fármaco (reponer)",
-      "Ampolla o envase deteriorado"
-     ],
-     "detalleObl": true
-    }
-   ]
-  },
-  {
-   "n": 27,
-   "p": "AMPB",
-   "nombre": "Nicho 27 · Ampulario: filas 6 a 9 (las de abajo)",
-   "titulo": "Nicho 27",
-   "sub": "Ampulario · filas 6 a 9 (abajo)",
-   "asoc": [],
-   "ampLoc": true,
-   "box": {
-    "l": 14.0,
-    "t": 49.0,
-    "w": 62.0,
-    "h": 42.5
-   },
-   "cap": "Ampulario · filas 6 a 9 (las 4 de abajo, algunos cajones son más grandes). Desliza el panel frontal hacia arriba para verlas. Revisa lo que está dentro del recuadro que parpadea.",
-   "extra": [
-    {
-     "id": "far",
-     "t": "Fármacos de las filas 6 a 9 completos y repuestos",
-     "notaLbl": "Incidencia (obligatorio): escribe el fármaco o fármacos afectados",
-     "ph": "Qué fármaco(s) y cuántas ampollas",
-     "motivos": [
-      "No hay stock en el almacén",
-      "Fármaco caducado",
-      "Falta fármaco (reponer)",
-      "Ampolla o envase deteriorado"
-     ],
-     "detalleObl": true
-    }
-   ]
-  },
-  {
-   "n": 28,
-   "p": "AMPA",
-   "nombre": "Nicho 28 · Ampulario: panel frontal deslizante",
-   "titulo": "Nicho 28",
-   "sub": "Ampulario · panel frontal deslizante",
-   "asoc": [],
-   "ampLoc": true,
-   "box": {
-    "l": 12.0,
-    "t": 60.6,
-    "w": 58.5,
-    "h": 36.5
-   },
-   "cap": "Ampulario · panel frontal deslizante (se mueve por un carril: puede estar arriba, en medio o abajo). Revisa las hileras de ampollas del recuadro que parpadea.",
-   "extra": [
-    {
-     "id": "far",
-     "t": "Ampollas del panel frontal completas y repuestas",
-     "notaLbl": "Incidencia (obligatorio): escribe el fármaco o fármacos afectados",
-     "ph": "Fármaco que falta o motivo",
-     "motivos": [
-      "No hay stock en el almacén",
-      "Fármaco caducado",
-      "Falta fármaco (reponer)",
-      "Ampolla o envase deteriorado",
-      "Panel sin ampollas todavía"
-     ],
-     "detalleObl": true
-    }
-   ]
-  },
-  {
-   "n": 29,
    "p": "TRAUMA",
-   "nombre": "Nicho 29 · Portón de trauma",
+   "nombre": "Nicho 26 · Portón de trauma",
    "asoc": [],
    "nota": "Foto de referencia del espacio trauma (herramientas, carro plegable y botellas de oxígeno)",
-   "titulo": "Nicho 29",
+   "titulo": "Nicho 26",
    "sub": "Portón de trauma"
   },
   {
-   "n": 30,
+   "n": 27,
    "p": "I",
-   "nombre": "Nicho 30 · Maletín de pediatría y partos",
+   "nombre": "Nicho 27 · Maletín de pediatría y partos",
    "asoc": [],
    "box": {
     "l": 13.2,
@@ -907,13 +864,13 @@ noscript{display:block;padding:16px}
     "h": 15.8
    },
    "cap": "Panel lateral izquierdo · mochila pediátrica (maletín de pediatría y partos), abajo a la izquierda. Revisa la mochila que parpadea.",
-   "titulo": "Nicho 30",
+   "titulo": "Nicho 27",
    "sub": "Maletín de pediatría y partos"
   },
   {
-   "n": 31,
+   "n": 28,
    "p": "I",
-   "nombre": "Nicho 31 · Maletín de triaje",
+   "nombre": "Nicho 28 · Maletín de triaje",
    "asoc": [],
    "omitir": [
     "cad"
@@ -938,17 +895,10 @@ noscript{display:block;padding:16px}
     "h": 18.0
    },
    "cap": "Panel lateral izquierdo · mochila IMV (incidente con múltiples víctimas), el maletín de triaje, abajo a la izquierda. Revisa la mochila que parpadea.",
-   "titulo": "Nicho 31",
+   "titulo": "Nicho 28",
    "sub": "Maletín de triaje"
   }
  ],
- "ampBox": {
-  "p": "D",
-  "l": 49.1,
-  "t": 28.8,
-  "w": 19.5,
-  "h": 34.2
- },
  "limpiezas": [
   {
    "id": "lun",
@@ -1019,12 +969,12 @@ function nichoInfo(n){for(var i=0;i<CFG.nichos.length;i++){if(CFG.nichos[i].n===
 /* ---------- estado y borrador local ---------- */
 var OTRO='__otro__',VACIO='__vacio__';
 function freshCrew(){var c={};CFG.equipo.forEach(function(r){c[r.id]={sel:r.obligatorio?'':VACIO,sub:'',sig:''};});return c;}
-function fresh(){return {fecha:today(),hora:nowTime(),obs:'',nicho:'',crew:freshCrew(),a:{}};}
+function fresh(){return {fecha:today(),hora:nowTime(),creada:Date.now(),manual:false,alumno:'',obs:'',nicho:'',crew:freshCrew(),a:{}};}
 function load(){
   try{
     var r=localStorage.getItem(KEY);if(!r)return null;
     var o=JSON.parse(r);if(!(o&&o.a))return null;
-    o.nicho=o.nicho||'';
+    o.nicho=o.nicho||'';o.alumno=o.alumno||'';
     var fc=freshCrew();o.crew=o.crew||{};
     CFG.equipo.forEach(function(q){if(!o.crew[q.id])o.crew[q.id]=fc[q.id];});
     return o;
@@ -1032,6 +982,20 @@ function load(){
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 var S=load()||fresh();
+/* fecha y hora automáticas: un borrador de otro día (o de hace más de 14 h) se descarta y se empieza uno nuevo con la fecha y la hora actuales */
+var NEWNOTE='',WIPEPH=false;
+function isStale(o){
+  var hasData=Object.keys(o.a||{}).length>0;
+  if(!hasData)return false;
+  if(o.creada)return (Date.now()-o.creada)>14*3600*1000;
+  return o.fecha!==today();
+}
+function autoDate(){
+  if(isStale(S)){NEWNOTE=S.fecha;S=fresh();WIPEPH=true;save();return true;}
+  if(!Object.keys(S.a||{}).length&&!S.manual){S.fecha=today();S.hora=nowTime();save();}
+  return false;
+}
+autoDate();
 /* fotos opcionales (se guardan aparte para que un fallo de espacio no pierda el resto del borrador) */
 var PH={};
 function phKey(id){return KEY+'-ph-'+id;}
@@ -1039,6 +1003,7 @@ function phSave(id){try{if(PH[id])localStorage.setItem(phKey(id),JSON.stringify(
 function fotoItems(){var o=[];CFG.bloques.forEach(function(b){b.items.forEach(function(it){if(it.tipo==='foto')o.push(it);});});return o;}
 function phWipe(){fotoItems().forEach(function(it){delete PH[it.id];try{localStorage.removeItem(phKey(it.id));}catch(e){}});}
 fotoItems().forEach(function(it){try{var r=localStorage.getItem(phKey(it.id));if(r)PH[it.id]=JSON.parse(r);}catch(e){}});
+if(WIPEPH)phWipe();
 /* ---------- fotos: cualquier formato (JPG, PNG, WebP, HEIC… y PDF); siempre se reducen al insertarlas ---------- */
 var JS_PDF='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
     JS_PDFW='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js',
@@ -1148,14 +1113,12 @@ function paintFoto(it){
   if(f){pv.src=f.url;pv.hidden=false;rm.hidden=false;lb.textContent='Cambiar foto o PDF';}
   else{pv.removeAttribute('src');pv.hidden=true;rm.hidden=true;lb.textContent='Elegir foto o PDF';}
 }
-var STALE=(S.fecha!==today()&&Object.keys(S.a).length>0);
+var STALE=false;
 
 /* ---------- secciones del día ---------- */
 function figNicho(nn){
   if(nn.box){
-    var out=[{p:nn.p,box:nn.box,alt:'Ampulario: '+nn.nombre,cap:nn.cap||'',titulo:'Zona que toca revisar (el recuadro parpadea)'}];
-    if(nn.ampLoc)out.push({p:CFG.ampBox.p,box:CFG.ampBox,alt:'Ampulario en el panel lateral derecho',cap:'El ampulario está en el panel lateral derecho de la cabina.',titulo:'Dónde está el ampulario en la cabina',cerrada:true});
-    return out;
+    return [{p:nn.p,box:nn.box,alt:'Zona a revisar: '+nn.nombre,cap:nn.cap||'',titulo:'Zona que toca revisar (el recuadro parpadea)'}];
   }
   if(!nn.p)return [];
   var p=CFG.paredes[nn.p];
@@ -1270,7 +1233,6 @@ function crewProblems(){
     var c=S.crew[r.id];
     if(r.obligatorio&&!c.sel)p.push({id:'crew-'+r.id+'-sel',kind:'crew'});
     else if(c.sel===OTRO&&!c.sub.trim())p.push({id:'crew-'+r.id+'-sub',kind:'sub'});
-    else if(isPerson(c)&&CFG.firmaObligatoria&&!c.sig)p.push({id:'crew-'+r.id+'-sig',kind:'sig'});
   });
   return p;
 }
@@ -1292,64 +1254,6 @@ function figEl(f){
   return det;
 }
 
-/* firma o dibujo libre con el dedo: varios trazos, sin borrar nada salvo con los botones */
-function makePad(rid){
-  var cv=h('canvas',{width:'360',height:'280','aria-label':'Zona de firma o dibujo libre'});
-  var ctx=cv.getContext('2d');
-  ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#0c2447';
-  var pad=h('div',{class:'sigpad'},[cv,h('span',{class:'sighint',text:'Firma o dibuja aquí con el dedo'})]);
-  var gut=function(){return h('div',{class:'siggut','aria-hidden':'true'},[h('b',{text:'↕'}),h('span',{text:'Aquí puedes deslizar'})]);};
-  var wrap=h('div',{class:'sigwrap'+(S.crew[rid].sig?' has':'')},[gut(),pad,gut()]);
-  var drawing=false,last=null,strokes=[],cur=null,base=null,undoBtn=null;
-  function pos(e){var r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height};}
-  function refresh(){if(undoBtn)undoBtn.disabled=!strokes.length;}
-  function paintAll(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    if(base){var k=Math.min(cv.width/base.width,cv.height/base.height),w=base.width*k,hh=base.height*k;ctx.drawImage(base,(cv.width-w)/2,(cv.height-hh)/2,w,hh);}
-    strokes.forEach(function(st){
-      ctx.beginPath();ctx.moveTo(st[0].x,st[0].y);
-      if(st.length===1)ctx.lineTo(st[0].x+0.1,st[0].y);else for(var i=1;i<st.length;i++)ctx.lineTo(st[i].x,st[i].y);
-      ctx.stroke();
-    });
-  }
-  /* guarda el dibujo completo y una copia recortada (para el PDF) */
-  function persist(){
-    var c=S.crew[rid],d=ctx.getImageData(0,0,cv.width,cv.height).data,x0=cv.width,y0=cv.height,x1=-1,y1=-1;
-    for(var y=0;y<cv.height;y++)for(var x=0;x<cv.width;x++){if(d[(y*cv.width+x)*4+3]>10){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}}
-    if(x1<0){c.sig='';c.sigc='';c.sigr=0;wrap.classList.remove('has');}
-    else{
-      var m=8;x0=Math.max(0,x0-m);y0=Math.max(0,y0-m);x1=Math.min(cv.width-1,x1+m);y1=Math.min(cv.height-1,y1+m);
-      var w=x1-x0+1,hh=y1-y0+1,t=document.createElement('canvas');t.width=w;t.height=hh;
-      t.getContext('2d').drawImage(cv,x0,y0,w,hh,0,0,w,hh);
-      c.sig=cv.toDataURL('image/png');c.sigc=t.toDataURL('image/png');c.sigr=w/hh;
-      wrap.classList.add('has');
-    }
-    save();updateAll();refresh();
-  }
-  if(S.crew[rid].sig){
-    var im=new Image();im.onload=function(){base=im;paintAll();};im.src=S.crew[rid].sig;
-  }
-  cv.addEventListener('pointerdown',function(e){
-    e.preventDefault();
-    drawing=true;last=pos(e);cur=[last];strokes.push(cur);
-    try{cv.setPointerCapture(e.pointerId);}catch(x){}
-    ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(last.x+0.1,last.y);ctx.stroke();
-    wrap.classList.add('has');wrap.classList.remove('err');
-  });
-  cv.addEventListener('pointermove',function(e){
-    if(!drawing)return;e.preventDefault();
-    var p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();
-    cur.push(p);last=p;
-  });
-  function end(){if(!drawing)return;drawing=false;persist();}
-  cv.addEventListener('pointerup',end);
-  cv.addEventListener('pointercancel',end);
-  wrap.clear=function(){strokes=[];base=null;ctx.clearRect(0,0,cv.width,cv.height);var c=S.crew[rid];c.sig='';c.sigc='';c.sigr=0;wrap.classList.remove('has');save();updateAll();refresh();};
-  wrap.undo=function(){if(!strokes.length)return;strokes.pop();paintAll();persist();};
-  wrap.setUndoBtn=function(b){undoBtn=b;refresh();};
-  return wrap;
-}
-
 function buildCrewCard(){
   var body=h('div',{class:'body'});
   CFG.equipo.forEach(function(r){
@@ -1363,31 +1267,23 @@ function buildCrewCard(){
     var sub=h('div',{class:'sub',id:'crew-'+r.id+'-subw',hidden:true},[
       h('label',{for:'crew-'+r.id+'-sub',text:'Sustituto:'}),
       h('input',{id:'crew-'+r.id+'-sub',type:'text',autocomplete:'off',placeholder:'Nombre y apellidos',value:c.sub,
-        oninput:function(e){c.sub=e.target.value;e.target.classList.remove('err');save();showPad();updateAll();}})
+        oninput:function(e){c.sub=e.target.value;e.target.classList.remove('err');save();showSub();updateAll();}})
     ]);
-    var padHolder=h('div',{class:'sig',id:'crew-'+r.id+'-sig',tabindex:'-1',hidden:true});
-    var pad=makePad(r.id);
-    var who=h('span',{text:''});
-    padHolder.appendChild(pad);
-    var undoB=h('button',{class:'small',type:'button',text:'Deshacer trazo',onclick:function(){pad.undo();}});
-    pad.setUndoBtn(undoB);
-    padHolder.appendChild(h('div',{class:'sigrow'},[who,h('div',{class:'sigbtns'},[undoB,h('button',{class:'small',type:'button',text:'Borrar todo',onclick:function(){pad.clear();}})])]));
-    function showPad(){
-      sub.hidden=(c.sel!==OTRO);
-      var ok=isPerson(c);
-      padHolder.hidden=!ok;
-      who.textContent=ok?('Firma de '+crewName(r)):'';
-    }
+    function showSub(){sub.hidden=(c.sel!==OTRO);}
     sel.addEventListener('change',function(e){
-      var prev=c.sel;c.sel=e.target.value;e.target.classList.remove('err');
-      if(c.sel!==prev){c.sig='';c.sigc='';c.sigr=0;pad.classList.remove('has');pad.clear();}
+      c.sel=e.target.value;e.target.classList.remove('err');
       if(c.sel!==OTRO){c.sub='';}
-      save();showPad();updateAll();
+      save();showSub();updateAll();
       if(c.sel===OTRO){var t=$('crew-'+r.id+'-sub');if(t)t.focus();}
     });
-    showPad();
-    body.appendChild(h('div',{class:'crew'},[h('label',{for:'crew-'+r.id+'-sel',text:r.t}),sel,sub,padHolder]));
+    showSub();
+    body.appendChild(h('div',{class:'crew'},[h('label',{for:'crew-'+r.id+'-sel',text:r.t}),sel,sub]));
   });
+  body.appendChild(h('div',{class:'crew'},[
+    h('label',{for:'f-alumno',text:'Alumno/a de prácticas (opcional)'}),
+    h('input',{id:'f-alumno',type:'text',autocomplete:'off',placeholder:'Nombre y apellidos, si hay alumno/a',value:S.alumno||'',
+      oninput:function(e){S.alumno=e.target.value;save();}})
+  ]));
   return h('section',{class:'card'},[h('h2',{text:'Equipo de guardia'}),body]);
 }
 
@@ -1401,11 +1297,8 @@ function render(){
   if(CFG.provisional){
     app.appendChild(h('div',{class:'banner',role:'note'},[h('strong',{text:'Versión de prueba. '}),'Los puntos de revisión son un borrador y se irán completando.']));
   }
-  if(STALE){
-    app.appendChild(h('div',{class:'banner',role:'note'},[
-      'Hay una revisión sin terminar del '+fmtDate(S.fecha)+'. ',h('br'),
-      h('button',{class:'small',type:'button',onclick:function(){phWipe();S=fresh();STALE=false;save();render();window.scrollTo(0,0);}},['Empezar revisión nueva'])
-    ]));
+  if(NEWNOTE){
+    app.appendChild(h('div',{class:'banner',role:'note'},[h('strong',{text:'Revisión nueva. '}),'La anterior era del '+fmtDate(NEWNOTE)+' y se ha empezado una nueva con la fecha y la hora de ahora.']));
   }
 
   app.appendChild(h('div',{id:'bar'},[
@@ -1422,9 +1315,10 @@ function render(){
   });
   app.appendChild(h('section',{class:'card'},[h('h2',{text:'Datos de la guardia'}),h('div',{class:'body'},[
     h('div',{class:'row2'},[
-      h('div',null,[h('label',{for:'f-fecha',text:'Fecha'}),h('input',{id:'f-fecha',type:'date',value:S.fecha,oninput:function(e){S.fecha=e.target.value;save();if(dayInfo(S.fecha))renderKeep();}})]),
-      h('div',null,[h('label',{for:'f-hora',text:'Hora'}),h('input',{id:'f-hora',type:'time',value:S.hora,oninput:function(e){S.hora=e.target.value;save();}})])
+      h('div',null,[h('label',{for:'f-fecha',text:'Fecha'}),h('input',{id:'f-fecha',type:'date',value:S.fecha,oninput:function(e){S.fecha=e.target.value;S.manual=true;save();if(dayInfo(S.fecha))renderKeep();}})]),
+      h('div',null,[h('label',{for:'f-hora',text:'Hora'}),h('input',{id:'f-hora',type:'time',value:S.hora,oninput:function(e){S.hora=e.target.value;S.manual=true;save();}})])
     ]),
+    h('p',{class:'hint',text:'La fecha y la hora se ponen solas con el momento de la revisión. Puedes cambiarlas si hace falta.'}),
     h('p',{class:'hoyt',text:'Hoy, '+fmtLong(CTX.di)+', toca:'}),chips
   ])]));
   app.appendChild(buildCrewCard());
@@ -1482,6 +1376,7 @@ function render(){
     'Lo que rellenas se guarda en este teléfono mientras trabajas.',h('br'),
     h('button',{class:'small',id:'reset',type:'button',onclick:onReset,text:'Empezar una revisión nueva'})
   ]));
+  app.appendChild(h('p',{class:'credit'},[CFG.creditoL1,h('br'),CFG.creditoL2]));
 
   ALL.forEach(function(x){updateItem(x.it);});
   updateAll();
@@ -1732,6 +1627,7 @@ function resumen(conPdf){
     if(nm)L.push('   '+r.t+': '+nm+(S.crew[r.id].sel===OTRO?' (sustituto)':''));
     else if(r.obligatorio)L.push('   '+r.t+': puesto sin cubrir');
   });
+  if((S.alumno||'').trim())L.push('🎓 Alumno/a de prácticas: '+S.alumno.trim());
   L.push('🗄 '+nichoTexto());
   L.push('');
   if(inc.length){
@@ -1776,7 +1672,7 @@ function titleImg(){
 function buildPDF(TI){
   var J=window.jspdf.jsPDF;
   var doc=new J({unit:'mm',format:'a4',orientation:'portrait',compress:true});
-  var W=210,H=297,M=14,CW=W-2*M,TOP2=20,BOT=H-17,y=0;
+  var W=210,H=297,M=14,CW=W-2*M,TOP2=20,BOT=H-21,y=0;
   var C={navy:[12,36,71],gold:[245,211,28],ok:[23,121,74],inc:[179,38,30],na:[91,107,134],line:[211,221,234],ink:[22,30,46],mut:[91,107,134],soft:[241,245,249],incbg:[253,236,234],white:[255,255,255]};
   function col(c){doc.setTextColor(c[0],c[1],c[2]);}
   function fill(c){doc.setFillColor(c[0],c[1],c[2]);}
@@ -1813,22 +1709,21 @@ function buildPDF(TI){
   CFG.equipo.forEach(function(r){
     var cc=S.crew[r.id];
     if(cc.sel===VACIO&&!r.obligatorio)return;
-    ensure(17);
+    ensure(12);
     var nm=crewName(r);
     font(7,'bold');col(C.mut);doc.text(safe(r.t).toUpperCase(),M,y+3);
     font(10.5,'bold');
-    if(nm){col(C.ink);doc.text(wrap((cc.sel===OTRO?'Sustituto: ':'')+nm,CW-52),M,y+8);}
+    if(nm){col(C.ink);doc.text(wrap((cc.sel===OTRO?'Sustituto: ':'')+nm,CW),M,y+8);}
     else{col(C.inc);doc.text('Puesto sin cubrir',M,y+8);}
-    if(nm&&cc.sig){
-      stroke(C.line);doc.setLineWidth(0.2);doc.rect(W-M-46,y,46,16);
-      try{
-        var im=cc.sigc||cc.sig,ra=cc.sigc?(cc.sigr||3):3,bw=44,bh=15,iw=bh*ra,ih=bh;
-        if(iw>bw){iw=bw;ih=bw/ra;}
-        doc.addImage(im,'PNG',W-M-46+(46-iw)/2,y+(16-ih)/2,iw,ih);
-      }catch(e){}
-    }
-    y+=18;
+    y+=11;
   });
+  if((S.alumno||'').trim()){
+    ensure(12);
+    font(7,'bold');col(C.mut);doc.text('ALUMNO/A DE PRÁCTICAS',M,y+3);
+    font(10.5,'bold');col(C.ink);doc.text(wrap(safe(S.alumno.trim()),CW),M,y+8);
+    y+=11;
+  }
+  y+=2;
   y+=1;
   var r4=field('Nicho del día',nichoTexto(),M,CW);
   y+=r4+3;
@@ -1866,7 +1761,7 @@ function buildPDF(TI){
   }
 
   SECS.forEach(function(sec){
-    ensure(9.4+14);
+    ensure(9.4+7+14);
     var d=0,ri=reqItems(sec);ri.forEach(function(it){var st=status(it);if(st==='ok'||st==='inc'||st==='na')d++;});
     var gold=(sec.tema==='nicho'&&!sec.rojo);
     fill(sec.rojo?C.inc:(gold?C.gold:C.navy));doc.rect(M,y,CW,8.5,'F');
@@ -1945,10 +1840,13 @@ function buildPDF(TI){
       font(8.5,'bold');col(C.white);
       doc.text(safe(CFG.unidad+' · '+CFG.codigo+' · Revisión de inicio de guardia · '+fmtDate(S.fecha)+' '+S.hora),M,7);
     }
-    stroke(C.line);doc.setLineWidth(0.2);doc.line(M,H-12,W-M,H-12);
+    stroke(C.line);doc.setLineWidth(0.2);doc.line(M,H-17,W-M,H-17);
     font(7.5,'normal');col(C.mut);
-    doc.text(safe(CFG.unidad+' · '+CFG.codigo+' · Revisión de '+fmtDate(S.fecha)+' '+S.hora),M,H-8);
-    doc.text('Página '+p+' de '+n,W-M,H-8,{align:'right'});
+    doc.text(safe(CFG.unidad+' · '+CFG.codigo+' · Revisión de '+fmtDate(S.fecha)+' '+S.hora),M,H-13);
+    doc.text('Página '+p+' de '+n,W-M,H-13,{align:'right'});
+    font(6.5,'normal');
+    doc.text(safe(CFG.creditoL1),M,H-9);
+    doc.text(safe(CFG.creditoL2),M,H-5.6);
   }
   doc.setProperties({title:safe('Revisión de unidad '+CFG.unidad+' '+CFG.codigo+' - '+fmtDate(S.fecha)),author:CFG.unidad,subject:'Revisión de inicio de guardia'});
   return doc.output('blob');
@@ -2009,11 +1907,10 @@ function onGenerate(mode){
   var p=problems();
   if(p.length){
     var cnt=function(k){return p.filter(function(x){return x.kind===k;}).length;};
-    var pend=cnt('pend'),nn=cnt('incnote'),ncrew=cnt('crew'),nsub=cnt('sub'),nsig=cnt('sig');
+    var pend=cnt('pend'),nn=cnt('incnote'),ncrew=cnt('crew'),nsub=cnt('sub');
     var parts=[];
     if(ncrew)parts.push('elegir '+ncrew+(ncrew===1?' puesto':' puestos')+' del equipo');
     if(nsub)parts.push('escribir el nombre de '+nsub+(nsub===1?' sustituto':' sustitutos'));
-    if(nsig)parts.push(nsig+(nsig===1?' firma':' firmas'));
     if(pend)parts.push(pend+(pend===1?' punto sin revisar':' puntos sin revisar'));
     if(nn)parts.push(nn+(nn===1?' incidencia sin describir':' incidencias sin describir'));
     showMsg('Antes de generar el PDF falta: '+parts.join(', ')+'.','bad');
@@ -2021,7 +1918,6 @@ function onGenerate(mode){
     p.forEach(function(x){
       var e=$(x.id);if(!e)return;
       if(x.kind==='crew'||x.kind==='sub')e.classList.add('err');
-      if(x.kind==='sig'){var w=e.querySelector('.sigwrap');if(w)w.classList.add('err');}
     });
     goTo(p[0].id);
     return;

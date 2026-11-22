@@ -3,3 +3,5 @@
 App web de revisión de inicio de guardia. Los datos de cada revisión se guardan solo en el móvil de quien la rellena. Genera un informe en PDF para enviar por WhatsApp.
 
 Incluye jsPDF 2.5.1 (MIT) en `lib/`.
+
+Autoría, asesoramiento y verificación: Carlos Blanco, responsable de enfermería del SVAE de Talavera. Elaborada con la ayuda de la inteligencia artificial Claude (Anthropic).
