@@ -212,7 +212,7 @@ noscript{display:block;padding:16px}
   "Equipo averiado o no funciona"
  ],
  "inicio": "2026-11-24",
- "ciclo": 24,
+ "ciclo": 25,
  "orden": [
   1,
   2,
@@ -237,7 +237,8 @@ noscript{display:block;padding:16px}
   25,
   26,
   27,
-  28
+  28,
+  29
  ],
  "equipo": [
   {
@@ -948,6 +949,36 @@ noscript{display:block;padding:16px}
    "cap": "Panel lateral izquierdo · mochila IMV (incidente con múltiples víctimas), el maletín de triaje, abajo a la izquierda. Revisa la mochila que parpadea.",
    "titulo": "Nicho 28",
    "sub": "Maletín de triaje"
+  },
+  {
+   "n": 29,
+   "p": "A",
+   "nombre": "Nicho 29 · Nevera",
+   "asoc": [],
+   "et": "la nevera",
+   "box": {
+    "l": 16.8,
+    "t": 79.6,
+    "w": 19.8,
+    "h": 15.6
+   },
+   "cap": "Pared A · la nevera, abajo a la izquierda. Revisa la zona que parpadea.",
+   "ov": {
+    "cad": {
+     "motivos": [
+      "No funciona, defectuoso o no enciende",
+      "Material caducado",
+      "Material deteriorado o roto",
+      "Falta material (reponer)",
+      "No hay stock en el almacén"
+     ]
+    },
+    "lim": {
+     "t": "Limpieza de la nevera realizada"
+    }
+   },
+   "titulo": "Nicho 29",
+   "sub": "Nevera"
   }
  ],
  "limpiezas": [
@@ -1015,7 +1046,7 @@ function dayInfo(iso){
   return {y:y,mo:mo,d:d,days:Math.round((t-t0)/864e5),dow:dow,lastSat:(dow===6&&d+7>dim)};
 }
 function fmtLong(di){return DIAS[di.dow]+' '+di.d+' de '+MESES[di.mo-1]+' de '+di.y;}
-function nichoEt(n){var q=nichoInfo(n);return q.conj?'el '+q.nombre.toLowerCase():'el nicho '+n;}
+function nichoEt(n){var q=nichoInfo(n);return q.et?q.et:(q.conj?'el '+q.nombre.toLowerCase():'el nicho '+n);}
 function nichoInfo(n){for(var i=0;i<CFG.nichos.length;i++){if(CFG.nichos[i].n===n)return CFG.nichos[i];}return CFG.nichos[0];}
 
 /* ---------- estado y borrador local ---------- */
