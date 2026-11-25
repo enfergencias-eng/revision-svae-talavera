@@ -211,8 +211,34 @@ noscript{display:block;padding:16px}
   "Falta material (reponer)",
   "Equipo averiado o no funciona"
  ],
- "inicio": "2026-11-21",
- "ciclo": 28,
+ "inicio": "2026-11-24",
+ "ciclo": 24,
+ "orden": [
+  1,
+  2,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28
+ ],
  "equipo": [
   {
    "id": "conductor",
@@ -660,44 +686,65 @@ noscript{display:block;padding:16px}
   {
    "n": 2,
    "p": "A",
-   "x": 69.3,
-   "y": 22.0,
-   "nombre": "Nicho 2",
-   "asoc": []
-  },
-  {
-   "n": 3,
-   "p": "A",
-   "x": 69.5,
-   "y": 33.7,
-   "nombre": "Nicho 3",
-   "asoc": []
-  },
-  {
-   "n": 4,
-   "p": "A",
-   "x": 64.6,
-   "y": 43.0,
-   "nombre": "Nicho 4",
-   "asoc": []
-  },
-  {
-   "n": 5,
-   "p": "A",
-   "x": 71.6,
-   "y": 47.3,
-   "nombre": "Nicho 5",
-   "asoc": []
-  },
-  {
-   "n": 6,
-   "p": "A",
-   "x": 50.6,
-   "y": 83.1,
-   "nombre": "Nicho 6",
+   "nombre": "Nicho conjunto 2, 3, 4, 5 y 6",
    "asoc": [
     "Nevera"
-   ]
+   ],
+   "titulo": "Nicho conjunto",
+   "sub": "2, 3, 4, 5 y 6",
+   "corto": "Nicho conjunto 2 a 6",
+   "conj": [
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "boxes": [
+    {
+     "l": 59.6,
+     "t": 14.6,
+     "w": 19.6,
+     "h": 36.0
+    },
+    {
+     "l": 46.0,
+     "t": 79.4,
+     "w": 27.4,
+     "h": 16.8
+    }
+   ],
+   "cap": "Pared A · los cajones 2, 3, 4 y 5 (a la derecha, arriba) y el nicho 6 (abajo, en el centro). Revisa las dos zonas que parpadean. La nevera se revisa en este mismo día.",
+   "ov": {
+    "cad": {
+     "t": "Material revisado: caducidades, baterías y fungible",
+     "motivos": [
+      "Sin batería",
+      "No funciona, defectuoso o no enciende",
+      "No hay repuesto de fungible",
+      "Material caducado",
+      "Material deteriorado o roto",
+      "Falta material (reponer)",
+      "No hay stock en el almacén"
+     ],
+     "notaLbl": "Incidencia (obligatorio): qué material o equipo y qué le ocurre",
+     "ph": "Qué material o equipo y en qué nicho"
+    },
+    "lim": {
+     "t": "Limpieza de los nichos realizada"
+    },
+    "asoc0": {
+     "motivos": [
+      "Sin batería",
+      "No funciona, defectuoso o no enciende",
+      "No hay repuesto de fungible",
+      "Material caducado",
+      "Material deteriorado o roto",
+      "Falta material (reponer)",
+      "No hay stock en el almacén"
+     ]
+    }
+   }
   },
   {
    "n": 7,
@@ -977,6 +1024,7 @@ function dayInfo(iso){
   return {y:y,mo:mo,d:d,days:Math.round((t-t0)/864e5),dow:dow,lastSat:(dow===6&&d+7>dim)};
 }
 function fmtLong(di){return DIAS[di.dow]+' '+di.d+' de '+MESES[di.mo-1]+' de '+di.y;}
+function nichoEt(n){var q=nichoInfo(n);return q.conj?'el '+q.nombre.toLowerCase():'el nicho '+n;}
 function nichoInfo(n){for(var i=0;i<CFG.nichos.length;i++){if(CFG.nichos[i].n===n)return CFG.nichos[i];}return CFG.nichos[0];}
 
 /* ---------- estado y borrador local ---------- */
@@ -1130,6 +1178,9 @@ var STALE=false;
 
 /* ---------- secciones del día ---------- */
 function figNicho(nn){
+  if(nn.boxes){
+    return [{p:nn.p,boxes:nn.boxes,alt:'Zonas a revisar: '+nn.nombre,cap:nn.cap||'',titulo:'Zonas que toca revisar (los recuadros parpadean)'}];
+  }
   if(nn.box){
     return [{p:nn.p,box:nn.box,alt:'Zona a revisar: '+nn.nombre,cap:nn.cap||'',titulo:'Zona que toca revisar (el recuadro parpadea)'}];
   }
@@ -1139,9 +1190,10 @@ function figNicho(nn){
 }
 function computeSections(){
   var di=dayInfo(S.fecha)||dayInfo(today());
-  var auto=mod(di.days,CFG.ciclo)+1;
+  var ord=CFG.orden;
+  var auto=ord[mod(di.days,ord.length)];
   var sel=parseInt(S.nicho,10);
-  var n=(sel>=1&&sel<=CFG.ciclo)?sel:auto;
+  var n=(ord.indexOf(sel)!==-1)?sel:auto;
   CTX={di:di,auto:auto,nicho:n,over:(n!==auto)};
   var secs=[];
   CFG.bloques.forEach(function(b){
@@ -1160,7 +1212,11 @@ function computeSections(){
   var nn=nichoInfo(n),base=(nn.extra||[]).concat(CFG.nichoItems.filter(function(x){return (nn.omitir||[]).indexOf(x.id)===-1;}));
   var items=base.map(function(x){return {id:'n'+nn.n+'-'+x.id,t:x.t,ok:x.ok,notaLbl:x.notaLbl,ph:x.ph,motivos:x.motivos,detalleObl:x.detalleObl};});
   (nn.asoc||[]).forEach(function(a,i){items.push({id:'n'+nn.n+'-asoc'+i,t:a+': revisado',ok:'Hecho'});});
-  secs.push({id:'nicho',tema:'nicho',kicker:'Nicho del día',titulo:(nn.titulo||nn.nombre),sub:nn.sub||'',pdf:'Nicho del día: '+nn.nombre,items:items,figs:figNicho(nn),nicho:true});
+  items.forEach(function(it){
+    var o=(nn.ov||{})[it.id.replace(/^n\d+-/,'')];
+    if(o)for(var k in o)if(Object.prototype.hasOwnProperty.call(o,k))it[k]=o[k];
+  });
+  secs.push({id:'nicho',tema:'nicho',kicker:'Nicho del día',titulo:(nn.titulo||nn.nombre),sub:nn.sub||'',pdf:'Nicho del día: '+nn.nombre,pdfCorto:(nn.corto||nn.titulo||nn.nombre),items:items,figs:figNicho(nn),nicho:true});
   var li=[];
   CFG.limpiezas.forEach(function(l){
     if((l.cuando==='lunes'&&di.dow===1)||(l.cuando==='ultimoSabado'&&di.lastSat)){
@@ -1263,6 +1319,7 @@ function figEl(f){
   var wrap=h('div',{class:'imgwrap'},[img]);
   if(f.ring)wrap.appendChild(h('i',{class:'ring',style:'left:'+f.ring.x+'%;top:'+f.ring.y+'%'}));
   if(f.box)wrap.appendChild(h('i',{class:'box',style:'left:'+f.box.l+'%;top:'+f.box.t+'%;width:'+f.box.w+'%;height:'+f.box.h+'%'}));
+  (f.boxes||[]).forEach(function(b){wrap.appendChild(h('i',{class:'box',style:'left:'+b.l+'%;top:'+b.t+'%;width:'+b.w+'%;height:'+b.h+'%'}));});
   det=h('details',{class:'fig',open:!f.cerrada},[h('summary',{text:f.titulo||'Ver dónde está'}),wrap,h('p',{class:'cap',text:f.cap||''})]);
   return det;
 }
@@ -1347,7 +1404,7 @@ function render(){
       sel.addEventListener('change',function(e){S.nicho=e.target.value;save();renderKeep();});
       body.appendChild(h('label',{for:'f-nicho',text:'Nicho a revisar hoy'}));
       body.appendChild(sel);
-      if(CTX.over)body.appendChild(h('div',{class:'warn',text:'Has cambiado el nicho: según el calendario tocaba el '+CTX.auto+'. Se indicará en el informe.'}));
+      if(CTX.over)body.appendChild(h('div',{class:'warn',text:'Has cambiado el nicho: según el calendario tocaba '+nichoEt(CTX.auto)+'. Se indicará en el informe.'}));
     }
     (sec.figs||[]).forEach(function(f){body.appendChild(figEl(f));});
     var lg='',wd={};
@@ -1627,7 +1684,7 @@ function incidencias(){
 }
 function nichoTexto(){
   var nn=nichoInfo(CTX.nicho);
-  return nn.nombre+(CTX.over?' (tocaba el '+CTX.auto+')':'');
+  return nn.nombre+(CTX.over?' (tocaba '+nichoEt(CTX.auto)+')':'');
 }
 function resumen(conPdf){
   var c=counts(),inc=incidencias(),L=[];
@@ -1860,14 +1917,21 @@ function buildPDF(TI){
       if(o.k==='msec'){
         fill([228,233,241]);doc.rect(x,yy,w,5.4,'F');
         fill([170,180,196]);doc.rect(x,yy,1.3,5.4,'F');
-        font(7.6,'bold');col(MUTD);doc.text(safe((o.sec.pdf||o.sec.titulo).replace(/\s*\(diario\)/i,'')).toUpperCase(),x+3,yy+3.7);
+        var tr=o.okN+'/'+o.n+' correctos',ti=o.ni?(o.ni+(o.ni===1?' incidencia (arriba)':' incidencias (arriba)')):'';
+        font(7,'normal');var tw=doc.getTextWidth(tr),rw=tw;
+        if(ti){font(6.8,'bold');rw+=3+doc.getTextWidth(ti);}
+        /* el título cede ante las etiquetas de la derecha: completo, sin «Nicho del día:», corto, letra menor, recortado */
+        var avail=w-3-2-rw-3,full0=safe((o.sec.pdf||o.sec.titulo).replace(/\s*\(diario\)/i,'')).toUpperCase(),cand=[full0];
+        if(o.sec.nicho){cand.push(full0.replace(/^NICHO DEL D[ÍI]A:\s*/,''));if(o.sec.pdfCorto)cand.push(safe(o.sec.pdfCorto).toUpperCase());}
+        var ttl=cand[cand.length-1],fs=7.6;
+        for(var q=0;q<cand.length;q++){font(7.6,'bold');if(doc.getTextWidth(cand[q])<=avail){ttl=cand[q];break;}}
+        font(fs,'bold');
+        while(fs>6&&doc.getTextWidth(ttl)>avail){fs-=0.2;font(fs,'bold');}
+        while(ttl.length>4&&doc.getTextWidth(ttl)>avail){ttl=ttl.slice(0,-2).replace(/\s+$/,'')+'…';}
+        col(MUTD);doc.text(ttl,x+3,yy+3.7);
         font(7,'normal');col(MUT);
-        var tr=o.okN+'/'+o.n+' correctos';
         doc.text(tr,x+w-2,yy+3.7,{align:'right'});
-        if(o.ni){
-          var tw=doc.getTextWidth(tr);font(6.8,'bold');
-          col(C.inc);doc.text(o.ni+(o.ni===1?' incidencia (arriba)':' incidencias (arriba)'),x+w-2-tw-3,yy+3.7,{align:'right'});
-        }
+        if(ti){font(6.8,'bold');col(C.inc);doc.text(ti,x+w-2-tw-3,yy+3.7,{align:'right'});}
       }else if(o.k==='para'){
         var y1=yy+3.2;
         if(o.label){font(7,'bold');col(MUTD);doc.text(safe(o.label)+':',x+2,y1);}
