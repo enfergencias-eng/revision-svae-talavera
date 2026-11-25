@@ -340,7 +340,7 @@ noscript{display:block;padding:16px}
      "id": "pu",
      "tipo": "foto",
      "t": "Foto de la prueba de usuario del monitor Tempus Pro / LS y del ventilador Monnal",
-     "nota": "Opcional. Haz una foto o elige una de la fototeca, o un PDF (cualquier formato). Se reduce sola al insertarla.",
+     "lblApp": "Saca una foto del papel de la prueba de usuario del Tempus y del ventilador con el OK.",
      "soloApp": true
     },
     {
@@ -1553,7 +1553,7 @@ function buildWheels(its){
 function buildItem(it){
   var box=h('div',{class:'item'+(it.rojo?' rojo':''),id:'it-'+it.id,'data-st':'pend'});
   if(it.tag)box.appendChild(h('div',{class:'tag',text:it.tag}));
-  if(!(it.g&&it.g===it.t))box.appendChild(h('div',{class:'lbl',text:it.t}));
+  if(!(it.g&&it.g===it.t))box.appendChild(h('div',{class:'lbl',text:it.lblApp||it.t}));
   if(it.nota)box.appendChild(h('p',{class:'cap',text:it.nota,style:'margin:-4px 0 8px'}));
   if(it.fig)box.appendChild(figEl(it.fig));
   if(it.tipo==='foto'){
