@@ -149,7 +149,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-vis
 .imgwrap{position:relative;border-radius:10px;overflow:hidden;border:1.5px solid var(--line);background:#fff}
 .imgwrap img{display:block;width:100%;height:auto}
 .ring{position:absolute;width:11%;aspect-ratio:1;transform:translate(-50%,-50%);border:4px solid var(--gold);border-radius:50%;box-shadow:0 0 0 3px #0c2447,0 0 16px 6px rgba(245,211,28,.9);animation:ring 1.4s ease-in-out infinite}
-.box{position:absolute;border:5px solid #ffe600;border-radius:8px;background:rgba(255,230,0,.10);box-shadow:0 0 0 3px #0c2447,0 0 18px 7px rgba(255,230,0,.8);animation:blink 1s ease-in-out infinite}
+.box{position:absolute;box-sizing:border-box;border:4px solid #e3000f;border-radius:6px;background:rgba(227,0,15,.16);box-shadow:0 0 0 2px #fff,0 0 14px 5px rgba(227,0,15,.8);animation:blink 1s ease-in-out infinite}
 @keyframes blink{0%,45%{opacity:1}55%,100%{opacity:.12}}
 @media (prefers-reduced-motion:reduce){.box,.ring{animation:none}}
 @keyframes ring{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.18)}}
@@ -686,7 +686,13 @@ noscript{display:block;padding:16px}
    "x": 61.5,
    "y": 10.6,
    "nombre": "Nicho 1",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 21.5,
+    "t": 4.0,
+    "w": 45.3,
+    "h": 11.0
+   }
   },
   {
    "n": 2,
@@ -744,7 +750,13 @@ noscript{display:block;padding:16px}
    "x": 28.1,
    "y": 22.0,
    "nombre": "Nicho 7",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 21.5,
+    "t": 15.3,
+    "w": 12.5,
+    "h": 35.4
+   }
   },
   {
    "n": 8,
@@ -752,7 +764,13 @@ noscript{display:block;padding:16px}
    "x": 22.5,
    "y": 53.7,
    "nombre": "Nicho 8",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 17.5,
+    "t": 50.7,
+    "w": 18.2,
+    "h": 6.4
+   }
   },
   {
    "n": 9,
@@ -760,7 +778,13 @@ noscript{display:block;padding:16px}
    "x": 31.4,
    "y": 60.4,
    "nombre": "Nicho 9",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 17.5,
+    "t": 57.1,
+    "w": 18.2,
+    "h": 6.0
+   }
   },
   {
    "n": 10,
@@ -768,7 +792,13 @@ noscript{display:block;padding:16px}
    "x": 22.0,
    "y": 66.7,
    "nombre": "Nicho 10",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 17.5,
+    "t": 63.1,
+    "w": 18.2,
+    "h": 6.3
+   }
   },
   {
    "n": 11,
@@ -778,6 +808,12 @@ noscript{display:block;padding:16px}
    "nombre": "Nicho 11 · Bodega",
    "asoc": [],
    "nota": "La bodega está detrás del asiento, en sentido contrario a la marcha",
+   "box": {
+    "l": 38.8,
+    "t": 35.9,
+    "w": 20.2,
+    "h": 40.4
+   },
    "titulo": "Nicho 11",
    "sub": "Bodega"
   },
@@ -787,7 +823,13 @@ noscript{display:block;padding:16px}
    "x": 85.8,
    "y": 19.0,
    "nombre": "Nicho 12",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 76.2,
+    "t": 13.0,
+    "w": 17.8,
+    "h": 10.4
+   }
   },
   {
    "n": 13,
@@ -795,7 +837,13 @@ noscript{display:block;padding:16px}
    "x": 66.0,
    "y": 19.7,
    "nombre": "Nicho 13",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 56.5,
+    "t": 14.1,
+    "w": 19.0,
+    "h": 10.2
+   }
   },
   {
    "n": 14,
@@ -803,7 +851,13 @@ noscript{display:block;padding:16px}
    "x": 45.3,
    "y": 20.3,
    "nombre": "Nicho 14",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 35.0,
+    "t": 14.9,
+    "w": 20.8,
+    "h": 10.5
+   }
   },
   {
    "n": 15,
@@ -811,7 +865,13 @@ noscript{display:block;padding:16px}
    "x": 25.9,
    "y": 20.7,
    "nombre": "Nicho 15",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 16.8,
+    "t": 15.7,
+    "w": 17.2,
+    "h": 10.8
+   }
   },
   {
    "n": 16,
@@ -819,7 +879,13 @@ noscript{display:block;padding:16px}
    "x": 23.0,
    "y": 33.9,
    "nombre": "Nicho 16",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 13.5,
+    "t": 28.2,
+    "w": 17.7,
+    "h": 10.3
+   }
   },
   {
    "n": 17,
@@ -827,7 +893,13 @@ noscript{display:block;padding:16px}
    "x": 22.5,
    "y": 43.4,
    "nombre": "Nicho 17",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 13.5,
+    "t": 38.9,
+    "w": 17.7,
+    "h": 9.7
+   }
   },
   {
    "n": 18,
@@ -835,7 +907,13 @@ noscript{display:block;padding:16px}
    "x": 23.0,
    "y": 53.5,
    "nombre": "Nicho 18",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 13.5,
+    "t": 48.8,
+    "w": 17.7,
+    "h": 9.2
+   }
   },
   {
    "n": 19,
@@ -843,7 +921,13 @@ noscript{display:block;padding:16px}
    "x": 14.2,
    "y": 20.1,
    "nombre": "Nicho 19",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 4.9,
+    "t": 14.7,
+    "w": 18.7,
+    "h": 10.4
+   }
   },
   {
    "n": 20,
@@ -851,7 +935,13 @@ noscript{display:block;padding:16px}
    "x": 33.6,
    "y": 21.7,
    "nombre": "Nicho 20",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 24.1,
+    "t": 16.4,
+    "w": 21.3,
+    "h": 10.5
+   }
   },
   {
    "n": 21,
@@ -861,7 +951,13 @@ noscript{display:block;padding:16px}
    "nombre": "Nicho 21",
    "asoc": [
     "Calientasueros"
-   ]
+   ],
+   "box": {
+    "l": 45.8,
+    "t": 18.7,
+    "w": 21.6,
+    "h": 9.9
+   }
   },
   {
    "n": 22,
@@ -869,7 +965,13 @@ noscript{display:block;padding:16px}
    "x": 62.6,
    "y": 66.1,
    "nombre": "Nicho 22",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 48.4,
+    "t": 63.8,
+    "w": 20.9,
+    "h": 5.1
+   }
   },
   {
    "n": 23,
@@ -877,7 +979,13 @@ noscript{display:block;padding:16px}
    "x": 62.6,
    "y": 72.1,
    "nombre": "Nicho 23",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 48.4,
+    "t": 69.1,
+    "w": 20.9,
+    "h": 6.2
+   }
   },
   {
    "n": 24,
@@ -885,7 +993,13 @@ noscript{display:block;padding:16px}
    "x": 62.6,
    "y": 78.2,
    "nombre": "Nicho 24",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 48.4,
+    "t": 75.7,
+    "w": 20.9,
+    "h": 6.1
+   }
   },
   {
    "n": 25,
@@ -893,14 +1007,26 @@ noscript{display:block;padding:16px}
    "x": 62.6,
    "y": 84.5,
    "nombre": "Nicho 25",
-   "asoc": []
+   "asoc": [],
+   "box": {
+    "l": 48.4,
+    "t": 82.2,
+    "w": 20.9,
+    "h": 6.5
+   }
   },
   {
    "n": 26,
    "p": "TRAUMA",
    "nombre": "Nicho 26 · Portón de trauma",
    "asoc": [],
-   "nota": "Foto de referencia del espacio trauma (herramientas, carro plegable y botellas de oxígeno)",
+   "box": {
+    "l": 15.0,
+    "t": 31.0,
+    "w": 53.5,
+    "h": 64.5
+   },
+   "cap": "Espacio trauma · herramientas, carro plegable y botellas de oxígeno. Revisa la zona que parpadea.",
    "titulo": "Nicho 26",
    "sub": "Portón de trauma"
   },
@@ -1201,10 +1327,11 @@ var STALE=false;
 /* ---------- secciones del día ---------- */
 function figNicho(nn){
   if(nn.boxes){
-    return [{p:nn.p,boxes:nn.boxes,alt:'Zonas a revisar: '+nn.nombre,cap:nn.cap||'',titulo:'Zonas que toca revisar (los recuadros parpadean)'}];
+    return [{p:nn.p,boxes:nn.boxes,alt:'Zonas a revisar: '+nn.nombre,cap:nn.cap||'',titulo:'Zonas que toca revisar (los recuadros rojos parpadean)'}];
   }
   if(nn.box){
-    return [{p:nn.p,box:nn.box,alt:'Zona a revisar: '+nn.nombre,cap:nn.cap||'',titulo:'Zona que toca revisar (el recuadro parpadea)'}];
+    var pp=CFG.paredes[nn.p];
+    return [{p:nn.p,box:nn.box,alt:'Zona a revisar: '+nn.nombre,cap:nn.cap||(pp.t+' · '+nn.nombre+(nn.nota?'. '+nn.nota:'')),titulo:'Zona que toca revisar (el recuadro rojo parpadea)'}];
   }
   if(!nn.p)return [];
   var p=CFG.paredes[nn.p];
