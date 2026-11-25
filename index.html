@@ -385,12 +385,14 @@ noscript{display:block;padding:16px}
     {
      "id": "gua-as",
      "g": "Guantes (todas las tallas)",
-     "t": "Cabina asistencial"
+     "t": "Cabina asistencial",
+     "pdfBajo": true
     },
     {
      "id": "gua-co",
      "g": "Guantes (todas las tallas)",
-     "t": "Cabina de conducción"
+     "t": "Cabina de conducción",
+     "pdfBajo": true
     },
     {
      "id": "bas",
@@ -1864,12 +1866,31 @@ function buildPDF(TI){
     return lines;
   }
   function part(txt,it,vals){return vals?txt+' – '+vals:txt;}
-  function paraOp(label,text,w){
-    var lw=0;
-    if(label){font(7,'bold');lw=doc.getTextWidth(label+':')+1.6;}
+  /* párrafo: título en negrita y mayúsculas + texto tenue. below=true: el título va solo y el texto justo debajo */
+  function paraOp(label,text,w,below){
+    var lw=0,colon=(text&&!below)?':':'';
+    if(label&&below){
+      font(8,'normal');
+      var lb=text?flowWrap(text,w-4,w-4):[];
+      return {k:'para',label:label,colon:'',lw:0,ls:lb,below:true,h:(1+lb.length)*lh(8)+1.9};
+    }
+    if(label){font(7,'bold');lw=doc.getTextWidth(label+colon)+1.6;}
     font(8,'normal');
-    var ls=flowWrap(text,w-4-lw,w-4);
-    return {k:'para',label:label,lw:lw,ls:ls,h:ls.length*lh(8)+1.9};
+    var ls=text?flowWrap(text,w-4-lw,w-4):[];
+    return {k:'para',label:label,colon:colon,lw:lw,ls:ls,h:Math.max(1,ls.length)*lh(8)+1.9};
+  }
+  /* oxígeno: tabla (botella · bares · nivel) en lugar de un párrafo corrido */
+  var OXH_T=4.4,OXH_C=3.4,OXR_1=4.8,OXR_2=7.6;
+  function oxyRow(op,grp,okI,vOf){
+    var parts=grp[0].g.split(' · '),nm=parts[1]||parts[0],sub=parts.slice(2).join(' · ');
+    nm=nm.charAt(0).toUpperCase()+nm.slice(1);
+    var cells=op.cols.map(function(c){
+      var it=null;grp.forEach(function(x){if(x.t===c)it=x;});
+      if(!it)return {v:'–'};
+      return status(it)==='inc'?{inc:true}:{v:vOf(it)||'–'};
+    });
+    var r={nm:nm,sub:sub,cells:cells,h:sub?OXR_2:OXR_1};
+    op.rows.push(r);op.h+=r.h;
   }
   function layoutSec(sec,w){
     var items=reqItems(sec),ops=[],d=0,ni=0;
@@ -1882,27 +1903,40 @@ function buildPDF(TI){
       if(g){while(j<items.length&&(items[j].g||'')===g)j++;}
       var grp=items.slice(i,j);i=j;
       var okI=grp.filter(function(it){return status(it)!=='inc';});
-      if(!okI.length)continue;
       var vOf=function(it){return (it.tipo==='num'||it.tipo==='esc')?safe(valueText(it)):'';};
-      if(!g||grp.length===1){
+      if(g&&grp[0].gc==='verde'&&grp.every(function(it){return it.tipo==='num'||it.tipo==='esc';})){
+        /* oxígeno: una sola tabla con una fila por botella (si una medida es incidencia, remite a lo de arriba) */
+        flush();
+        var fam=g.split(' · ')[0],lastO=ops[ops.length-1];
+        if(!(lastO&&lastO.k==='oxy'&&lastO.fam===fam)){
+          lastO={k:'oxy',fam:fam,label:fam.toUpperCase(),cols:[],rows:[],h:OXH_T+OXH_C+1.9};ops.push(lastO);
+        }
+        grp.forEach(function(it){if(lastO.cols.indexOf(it.t)===-1)lastO.cols.push(it.t);});
+        oxyRow(lastO,grp,okI,vOf);
+        continue;
+      }
+      if(!okI.length)continue;
+      if(!g){
+        /* sin grupo (nicho, limpiezas de hoy): siguen en una línea de sueltos */
         okI.forEach(function(it){
-          var v=vOf(it),lb=(g&&g!==it.t&&!v?g+': ':'')+it.t;
+          var v=vOf(it),lb=it.t;
           if(it.rojo&&it.nota)lb+=' ('+it.nota+')';
           singles.push(v?lb+': '+v:lb);
         });
         continue;
       }
       flush();
-      if(grp[0].gc==='verde'&&grp.every(function(it){return it.tipo==='num'||it.tipo==='esc';})){
-        /* oxígeno: una sola línea por familia con cada botella */
-        var parts=g.split(' · '),fam=parts[0],rest=parts.slice(1).join(' · ')||g;
-        var last=ops[ops.length-1];
-        var txt=rest.charAt(0).toUpperCase()+rest.slice(1)+': '+okI.map(vOf).join(', ');
-        if(last&&last.k==='para'&&last.fam===fam){last.raw+='  ·  '+txt;var np=paraOp(fam.toUpperCase(),last.raw,w);np.fam=fam;np.raw=last.raw;ops[ops.length-1]=np;}
-        else{var np2=paraOp(fam.toUpperCase(),txt,w);np2.fam=fam;np2.raw=txt;ops.push(np2);}
+      if(grp.length===1){
+        /* un solo ítem con título: título propio en negrita y mayúsculas, en su línea */
+        var it1=okI[0],v1=vOf(it1),lab1,txt1;
+        if(g===it1.t){lab1=g;txt1=v1;}
+        else if(v1){var mm=String(it1.t).match(/^([^(]+?)\s*(\(.*\))\s*$/);lab1=mm?mm[1]:it1.t;txt1=v1+(mm?' '+mm[2]:'');}
+        else{lab1=g;txt1=it1.t;}
+        if(it1.rojo&&it1.nota)txt1+=(txt1?' ':'')+'('+it1.nota+')';
+        ops.push(paraOp(safe(lab1).toUpperCase(),txt1,w,!!it1.pdfBajo));
         continue;
       }
-      ops.push(paraOp(g.toUpperCase(),okI.map(function(it){var v=vOf(it);return v?it.t+': '+v:it.t;}).join('  ·  '),w));
+      ops.push(paraOp(g.toUpperCase(),okI.map(function(it){var v=vOf(it);return v?it.t+': '+v:it.t;}).join('  ·  '),w,!!grp[0].pdfBajo));
     }
     flush();
     return ops;
@@ -1936,9 +1970,31 @@ function buildPDF(TI){
         if(ti){font(6.8,'bold');col(C.inc);doc.text(ti,x+w-2-tw-3,yy+3.7,{align:'right'});}
       }else if(o.k==='para'){
         var y1=yy+3.2;
-        if(o.label){font(7,'bold');col(MUTD);doc.text(safe(o.label)+':',x+2,y1);}
+        if(o.label){font(7,'bold');col(MUTD);doc.text(safe(o.label)+(o.colon||''),x+2,y1);}
         font(8,'normal');col(MUT);
-        o.ls.forEach(function(l,q){doc.text(safe(l),x+2+(q===0?o.lw:0),y1+q*lh(8));});
+        o.ls.forEach(function(l,q){
+          if(o.below)doc.text(safe(l),x+2,y1+(q+1)*lh(8));
+          else doc.text(safe(l),x+2+(q===0?o.lw:0),y1+q*lh(8));
+        });
+      }else if(o.k==='oxy'){
+        var NW=36,CWc=(w-4-NW)/Math.max(1,o.cols.length),yo=yy+3.2;
+        font(7,'bold');col(MUTD);doc.text(safe(o.label),x+2,yo);
+        var yh=yy+OXH_T;
+        font(6.2,'bold');col(MUT);
+        o.cols.forEach(function(c,q){doc.text(safe(c).toUpperCase(),x+3+NW+q*CWc,yh+2.3);});
+        var yq=yh+OXH_C;
+        o.rows.forEach(function(r,ri){
+          if(ri%2===0){fill([240,243,248]);doc.rect(x+1.2,yq,w-2.4,r.h,'F');}
+          var two=!!r.sub;
+          font(8,'normal');col(MUTD);doc.text(safe(r.nm),x+3,yq+(two?3.2:r.h/2+1.05));
+          if(two){font(6.4,'normal');col(MUT);doc.text(safe(r.sub),x+3,yq+6.1);}
+          r.cells.forEach(function(c,q){
+            var tx=x+3+NW+q*CWc,ty=yq+r.h/2+1.05;
+            if(c.inc){font(6.8,'bold');col(C.inc);doc.text('ver arriba',tx,ty);}
+            else{font(8,'normal');col(MUT);doc.text(safe(c.v),tx,ty);}
+          });
+          yq+=r.h;
+        });
       }else if(o.k==='photo'){
         fill([228,233,241]);doc.rect(x,yy,w,5.4,'F');fill([170,180,196]);doc.rect(x,yy,1.3,5.4,'F');
         font(7.6,'bold');col(MUTD);doc.text('FOTO · PRUEBA DE USUARIO',x+3,yy+3.7);
