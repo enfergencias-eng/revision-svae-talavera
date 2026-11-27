@@ -1270,7 +1270,14 @@ function dayInfo(iso){
   var y=+m[1],mo=+m[2],d=+m[3],t=Date.UTC(y,mo-1,d);
   var i=CFG.inicio.split('-'),t0=Date.UTC(+i[0],+i[1]-1,+i[2]);
   var dow=new Date(t).getUTCDay(),dim=new Date(Date.UTC(y,mo,0)).getUTCDate();
-  return {y:y,mo:mo,d:d,days:Math.round((t-t0)/864e5),dow:dow,lastSat:(dow===6&&d+7>dim)};
+  var days=Math.round((t-t0)/864e5),cnt=0,yy=+i[0],mm=+i[1];
+  while(Date.UTC(yy,mm-1,1)<=t){
+    var dm=new Date(Date.UTC(yy,mm,0)).getUTCDate(),ls=dm-((new Date(Date.UTC(yy,mm-1,dm)).getUTCDay()+1)%7),tl=Date.UTC(yy,mm-1,ls);
+    if(tl>=t0&&tl<t)cnt++;
+    mm++;if(mm>12){mm=1;yy++;}
+  }
+  /* nd: días de rotación de nichos; cada último sábado de mes (limpieza profunda, sin nicho) aplaza la rotación un día, así no se pierde ningún nicho */
+  return {y:y,mo:mo,d:d,days:days,nd:days-cnt,dow:dow,lastSat:(dow===6&&d+7>dim)};
 }
 function fmtLong(di){return DIAS[di.dow]+' '+di.d+' de '+MESES[di.mo-1]+' de '+di.y;}
 function nichoEt(n){var q=nichoInfo(n);return q.et?q.et:(q.conj?'el '+q.nombre.toLowerCase():'el nicho '+n);}
@@ -1446,10 +1453,10 @@ function figNicho0(nn){
 function computeSections(){
   var di=dayInfo(S.fecha)||dayInfo(today());
   var ord=CFG.orden;
-  var auto=ord[mod(di.days,ord.length)];
+  var auto=ord[mod(di.nd,ord.length)];
   var sel=parseInt(S.nicho,10);
   var n=(ord.indexOf(sel)!==-1)?sel:auto;
-  CTX={di:di,auto:auto,nicho:n,over:(n!==auto)};
+  CTX=di.lastSat?{di:di,auto:auto,nicho:null,over:false,sinNicho:true}:{di:di,auto:auto,nicho:n,over:(n!==auto)};
   var secs=[];
   CFG.bloques.forEach(function(b){
     var items=[];
@@ -1464,6 +1471,7 @@ function computeSections(){
     });
     secs.push({id:b.id,tema:b.id,kicker:b.kicker,titulo:b.titulo,pdf:b.pdf||b.titulo,items:items});
   });
+  if(!CTX.sinNicho){
   var nn=nichoInfo(n),base=(nn.extra||[]).concat(CFG.nichoItems.filter(function(x){return (nn.omitir||[]).indexOf(x.id)===-1;}));
   var items=base.map(function(x){return {id:'n'+nn.n+'-'+x.id,t:x.t,ok:x.ok,notaLbl:x.notaLbl,ph:x.ph,motivos:x.motivos,detalleObl:x.detalleObl};});
   (nn.asoc||[]).forEach(function(a,i){items.push({id:'n'+nn.n+'-asoc'+i,t:a+': revisado',ok:'Hecho'});});
@@ -1472,6 +1480,7 @@ function computeSections(){
     if(o)for(var k in o)if(Object.prototype.hasOwnProperty.call(o,k))it[k]=o[k];
   });
   secs.push({id:'nicho',tema:'nicho',kicker:'Nicho del día',titulo:(nn.titulo||nn.nombre),sub:nn.sub||'',pdf:'Nicho del día: '+nn.nombre,pdfCorto:(nn.corto||nn.titulo||nn.nombre),items:items,figs:figNicho(nn),nicho:true});
+  }
   var li=[];
   CFG.limpiezas.forEach(function(l){
     if((l.cuando==='lunes'&&di.dow===1)||(l.cuando==='ultimoSabado'&&di.lastSat)){
@@ -1639,7 +1648,7 @@ function render(){
 
   /* datos de la guardia + qué toca hoy */
   var chips=h('div',{class:'chips'},[
-    h('span',{class:'chip',text:(function(){var q=nichoInfo(CTX.nicho);return (q.titulo||q.nombre)+(q.sub?' · '+q.sub:'');})()})
+    CTX.sinNicho?null:h('span',{class:'chip',text:(function(){var q=nichoInfo(CTX.nicho);return (q.titulo||q.nombre)+(q.sub?' · '+q.sub:'');})()})
   ]);
   CFG.limpiezas.forEach(function(l){
     if((l.cuando==='lunes'&&CTX.di.dow===1)||(l.cuando==='ultimoSabado'&&CTX.di.lastSat))chips.appendChild(h('span',{class:'chip'+(l.rojo?' red':''),text:l.chip}));
@@ -1650,7 +1659,8 @@ function render(){
       h('div',null,[h('label',{for:'f-hora',text:'Hora'}),h('input',{id:'f-hora',type:'time',value:S.hora,oninput:function(e){S.hora=e.target.value;S.manual=true;save();}})])
     ]),
     h('p',{class:'hint',text:'La fecha y la hora se ponen solas con el momento de la revisión. Puedes cambiarlas si hace falta.'}),
-    h('p',{class:'hoyt',text:'Hoy, '+fmtLong(CTX.di)+', toca:'}),chips
+    h('p',{class:'hoyt',text:'Hoy, '+fmtLong(CTX.di)+', toca:'}),chips,
+    CTX.sinNicho?h('p',{class:'hint',text:'Hoy no toca revisar ningún nicho: es el día de la limpieza profunda.'}):null
   ])]));
   app.appendChild(buildCrewCard());
 
@@ -1944,6 +1954,7 @@ function incidencias(){
   return out;
 }
 function nichoTexto(){
+  if(CTX.sinNicho)return 'Hoy no toca nicho: limpieza profunda';
   var nn=nichoInfo(CTX.nicho);
   return nn.nombre+(CTX.over?' (tocaba '+nichoEt(CTX.auto)+')':'');
 }
