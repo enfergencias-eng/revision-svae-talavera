@@ -146,6 +146,9 @@ input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-vis
 .wnotes .note{margin-top:10px;padding:8px 10px 10px;border-left:6px solid #d6241c;border-radius:8px;background:var(--incbg)}
 .fig{margin-top:12px}
 .fig>summary{cursor:pointer;font-weight:700;color:var(--ink);padding:8px 0;min-height:44px;display:flex;align-items:center}
+.fig.fotomat>summary{justify-content:center;gap:8px;min-height:52px;padding:10px 14px;margin-bottom:10px;border:2px solid var(--elec);border-radius:12px;background:var(--card);font-size:1.05rem}
+.fig.fotomat[open]>summary{background:var(--blue);border-color:var(--blue);color:#fff}
+.fig.fotomat>summary::-webkit-details-marker{display:none}
 .imgwrap{position:relative;border-radius:10px;overflow:hidden;border:1.5px solid var(--line);background:#fff}
 .imgwrap img{display:block;width:100%;height:auto}
 .ring{position:absolute;width:11%;aspect-ratio:1;transform:translate(-50%,-50%);border:4px solid var(--gold);border-radius:50%;box-shadow:0 0 0 3px #0c2447,0 0 16px 6px rgba(245,211,28,.9);animation:ring 1.4s ease-in-out infinite}
@@ -769,6 +772,12 @@ noscript{display:block;padding:16px}
     "t": 50.7,
     "w": 18.2,
     "h": 6.4
+   },
+   "fotoMat": {
+    "img": "img/nicho-8-material.jpg",
+    "t": "Ver foto del material",
+    "alt": "Foto del material del nicho 8",
+    "cap": "Material del nicho 8, para comparar con lo que hay en el cajón."
    },
    "extra": [
     {
@@ -1418,6 +1427,11 @@ var STALE=false;
 
 /* ---------- secciones del día ---------- */
 function figNicho(nn){
+  var r=figNicho0(nn);
+  if(nn.fotoMat)r.push({foto:nn.fotoMat.img,alt:nn.fotoMat.alt||'',cap:nn.fotoMat.cap||'',titulo:nn.fotoMat.t||'Ver foto del material'});
+  return r;
+}
+function figNicho0(nn){
   if(nn.boxes){
     return [{p:nn.p,boxes:nn.boxes,alt:'Zonas a revisar: '+nn.nombre,cap:nn.cap||'',titulo:'Zonas que toca revisar (los recuadros rojos parpadean)'}];
   }
@@ -1555,6 +1569,12 @@ function problems(){
 /* ---------- interfaz ---------- */
 function figEl(f){
   var det=null;
+  if(f.foto){
+    var im=h('img',{src:f.foto,alt:f.alt||'',loading:'lazy'});
+    det=h('details',{class:'fig fotomat'},[h('summary',{text:'\uD83D\uDCF7 '+f.titulo}),h('div',{class:'imgwrap'},[im]),h('p',{class:'cap',text:f.cap||''})]);
+    im.addEventListener('error',function(){det.hidden=true;});
+    return det;
+  }
   var img=h('img',{src:CFG.paredes[f.p].img,alt:f.alt||'',loading:'lazy'});
   img.addEventListener('error',function(){if(det)det.hidden=true;});
   var wrap=h('div',{class:'imgwrap'},[img]);
