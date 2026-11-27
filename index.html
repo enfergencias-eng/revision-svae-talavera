@@ -1487,7 +1487,7 @@ function computeSections(){
       li.push({id:'lim-'+l.id,t:l.t,rojo:!!l.rojo,nota:l.nota||'',tag:l.tag||'',ok:l.ok,chip:l.chip});
     }
   });
-  if(li.length)secs.push({id:'limpieza',tema:'limpieza',kicker:'Limpieza de hoy',titulo:li.map(function(x){return x.chip;}).join(' + '),pdf:'Limpieza de hoy',items:li,rojo:li.some(function(x){return x.rojo;})});
+  if(li.length)secs.push({id:'limpieza',tema:'limpieza',kicker:'Limpieza especial',titulo:li.map(function(x){return x.chip;}).join(' + '),pdf:'Limpieza especial',items:li,rojo:li.some(function(x){return x.rojo;})});
   return secs;
 }
 function recompute(){
